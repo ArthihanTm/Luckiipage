@@ -1,18 +1,9 @@
 /*
- * TODO: GameStatus.java
- * Purpose:
- * - Represent the current state of a blackjack game.
+ * Needed before this file:
+ * - none
  *
- * Planned states:
- * - PLAYER_TURN
- * - DEALER_TURN
- * - PLAYER_BUST
- * - DEALER_BUST
- * - PLAYER_WIN
- * - DEALER_WIN
- * - PUSH
- *
- * Notes:
- * - This should be an enum.
- * - Service logic decides when state transitions happen.
+ * TODO (superficial):
+ * - add status enum values
+ * - include turn states and end states
+ * - keep names short and consistent
  */

@@ -1,13 +1,10 @@
 /*
- * TODO: Card.java
- * Purpose:
- * - Represent a single playing card.
+ * Needed before this file:
+ * - Suit.java
+ * - Rank.java
  *
- * Planned fields:
- * - Suit suit
- * - Rank rank
- *
- * Notes:
- * - Keep immutable if possible.
- * - No scoring logic in this class.
+ * TODO (superficial):
+ * - add suit + rank fields
+ * - add constructor and getters
+ * - keep card immutable if possible
  */

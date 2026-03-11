@@ -1,16 +1,11 @@
 /*
- * TODO: BlackjackController.java
- * Purpose:
- * - Expose REST endpoints for blackjack gameplay.
+ * Needed before this file:
+ * - BlackjackService.java
+ * - StartGameRequest.java
+ * - GameResponse.java
  *
- * Planned endpoints:
- * - POST /api/blackjack/games            -> start game
- * - POST /api/blackjack/games/{id}/hit   -> player hit
- * - POST /api/blackjack/games/{id}/stand -> player stand
- * - GET  /api/blackjack/games/{id}       -> current game state
- *
- * Error handling:
- * - 400 bad request (invalid bet/input)
- * - 404 not found (unknown game id)
- * - 409 conflict (action not allowed in current state)
+ * TODO (superficial):
+ * - add endpoints for start, hit, stand, get
+ * - return proper HTTP status codes
+ * - map invalid state/id to clear responses
  */

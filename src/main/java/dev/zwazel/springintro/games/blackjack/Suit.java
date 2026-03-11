@@ -1,15 +1,9 @@
 /*
- * TODO: Suit.java
- * Purpose:
- * - Define the four card suits used in blackjack.
+ * Needed before this file:
+ * - none
  *
- * Planned values:
- * - HEARTS
- * - DIAMONDS
- * - CLUBS
- * - SPADES
- *
- * Notes:
- * - Keep this as a simple enum.
- * - No game logic should live in this file.
+ * TODO (superficial):
+ * - add 4 suit values
+ * - keep enum names uppercase
+ * - no methods needed here
  */

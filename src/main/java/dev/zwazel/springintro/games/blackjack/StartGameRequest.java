@@ -1,12 +1,9 @@
 /*
- * TODO: StartGameRequest.java
- * Purpose:
- * - Incoming API request for starting a new blackjack game.
+ * Needed before this file:
+ * - none
  *
- * Planned fields:
- * - int bet
- *
- * Validation notes:
- * - bet must be > 0
- * - return 400 for invalid bet
+ * TODO (superficial):
+ * - add bet field
+ * - validate bet > 0
+ * - keep request minimal
  */

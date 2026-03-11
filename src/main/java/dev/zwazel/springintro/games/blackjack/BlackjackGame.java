@@ -1,18 +1,11 @@
 /*
- * TODO: BlackjackGame.java
- * Purpose:
- * - Hold complete state of one blackjack round.
+ * Needed before this file:
+ * - Card.java
+ * - Hand.java
+ * - GameStatus.java
  *
- * Planned fields:
- * - UUID gameId
- * - int bet
- * - Deck/Deque<Card> deck
- * - Hand playerHand
- * - Hand dealerHand
- * - GameStatus status
- * - boolean finished
- *
- * Notes:
- * - This is a state container.
- * - Business rules stay in BlackjackService.
+ * TODO (superficial):
+ * - add game state fields (id, bet, deck, hands, status)
+ * - include finished flag
+ * - initialize hands and deck on creation
  */
