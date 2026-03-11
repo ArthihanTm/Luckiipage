@@ -1,3 +1,4 @@
+package dev.zwazel.springintro.games.blackjack;
 /*
  * Needed before this file:
  * - none
@@ -7,3 +8,10 @@
  * - keep enum names uppercase
  * - no methods needed here
  */
+
+public enum Suit {
+    HEARTS,
+    DIAMONDS,
+    CLUBS,
+    SPADES
+}
