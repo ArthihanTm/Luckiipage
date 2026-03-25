@@ -1,9 +1,27 @@
-/*
- * Needed before this file:
- * - none
- *
- * TODO (superficial):
- * - add rank values and base points
- * - set JACK/QUEEN/KING to 10
- * - set ACE base value to 11 (1/11 logic in service)
- */
+package dev.zwazel.springintro.games.blackjack;
+
+public enum Rank {
+    TWO(2),
+    THREE(3),
+    FOUR(4),
+    FIVE(5),
+    SIX(6),
+    SEVEN(7),
+    EIGHT(8),
+    NINE(9),
+    TEN(10),
+    JACK(10),
+    QUEEN(10),
+    KING(10),
+    ACE(11);
+
+    private final int pointValue;
+
+    Rank(int pointValue) {
+        this.pointValue = pointValue;
+    }
+
+    public int getPointValue() {
+        return pointValue;
+    }
+}
