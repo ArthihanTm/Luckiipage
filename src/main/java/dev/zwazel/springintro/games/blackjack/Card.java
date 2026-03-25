@@ -24,15 +24,3 @@ public class Card {
     }
 }
 
-
-class Print {
-    // 1. To access 'card' in the static main method, it should be static
-    // OR you should instantiate it inside the method.
-    static Card card = new Card(Suit.CLUBS, Rank.ACE);
-
-    // 2. The method signature must be 'void main', not 'main void'
-    public static void main(String[] args) {
-        System.out.println(card);
-    }
-}
-

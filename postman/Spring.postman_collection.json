@@ -157,6 +157,118 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "blackjack",
+      "item": [
+        {
+          "name": "start game",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bet\": 50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/blackjack/start",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "blackjack",
+                "start"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "hit",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/blackjack/{{gameId}}/hit",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "blackjack",
+                "{{gameId}}",
+                "hit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "stand",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/blackjack/{{gameId}}/stand",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "blackjack",
+                "{{gameId}}",
+                "stand"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get game",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/blackjack/{{gameId}}",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "blackjack",
+                "{{gameId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }
