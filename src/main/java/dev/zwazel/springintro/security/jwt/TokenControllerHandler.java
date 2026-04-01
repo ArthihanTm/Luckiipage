@@ -45,10 +45,34 @@ public class TokenControllerHandler {
         return errors;
     }
 
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleBadRequest(RuntimeException ex, WebRequest request) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(Instant.now())
+                .error("Bad Request")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .path(request.getDescription(false))
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleException(HttpMessageNotReadableException ex) {
-        return new ResponseEntity<>("Cannot parse JSON :: accepted roles " + Arrays.toString(Role.values()), HttpStatus.BAD_REQUEST);
+        String causeMessage = ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage();
+        String safeCause = (causeMessage == null || causeMessage.isBlank()) ? "Invalid JSON request body" : causeMessage;
+
+        // Only mention roles when the parsing error is actually about Role.
+        if (safeCause.contains("Role") || safeCause.contains(Role.class.getSimpleName())) {
+            return new ResponseEntity<>(
+                    "Cannot parse JSON :: accepted roles " + Arrays.toString(Role.values()),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        return new ResponseEntity<>("Cannot parse JSON :: " + safeCause, HttpStatus.BAD_REQUEST);
     }
 
 }
