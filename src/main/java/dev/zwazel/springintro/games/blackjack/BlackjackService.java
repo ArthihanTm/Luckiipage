@@ -85,7 +85,7 @@ public class BlackjackService {
     public GameResponse getGame(String gameId) {
         BlackjackGame game = findGame(gameId);
         return GameResponse.from(game, calculateHandValue(game.getPlayerHand()),
-                calculateHandValue(game.getDealerHand()));
+                calculateHandValue(game.getDealerHand()), game.getBet());
     }
 
     private BlackjackGame findGame(String gameId) {

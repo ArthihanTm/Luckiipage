@@ -11,6 +11,9 @@ package dev.zwazel.springintro.games.blackjack;
 public class StartGameRequest {
     private double bet;
 
+    public StartGameRequest() {
+    }
+
     public StartGameRequest(double bet) {
         setBet(bet);
     }

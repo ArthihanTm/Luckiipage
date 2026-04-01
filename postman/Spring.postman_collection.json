@@ -163,12 +163,48 @@
       "item": [
         {
           "name": "start game",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has gameId\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.gameId).to.be.a('string');",
+                  "    pm.collectionVariables.set('gameId', jsonData.gameId);",
+                  "    console.log('Game ID saved: ' + jsonData.gameId);",
+                  "});",
+                  "",
+                  "pm.test(\"Player has 2 cards\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.playerCards).to.have.lengthOf(2);",
+                  "});",
+                  "",
+                  "pm.test(\"Dealer shows 2 cards (one hidden)\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.dealerCards).to.have.lengthOf(2);",
+                  "    pm.expect(jsonData.dealerCards[1]).to.eql('[hidden]');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "noauth"
             },
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\r\n    \"bet\": 50\r\n}",
