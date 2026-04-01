@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { PlayingCard } from '../components/PlayingCard';
 import { CasinoChip } from '../components/CasinoChip';
 import { Disclaimer } from '../components/Disclaimer';
@@ -62,10 +63,12 @@ function toUiCard(card) {
 }
 
 export default function Blackjack() {
+  const { balance, setBalance } = useOutletContext();
   const [selectedChip, setSelectedChip] = useState(25);
   const [game, setGame] = useState(null); // backend GameResponse
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const settledGameIdRef = useRef('');
 
   const gameId = game?.id || '';
   const finished = !!game?.finished;
@@ -83,10 +86,45 @@ export default function Blackjack() {
     return cards;
   }, [game?.dealerCards, game?.dealerTotal]);
 
+  useEffect(() => {
+    if (!gameId || !finished) return;
+    if (settledGameIdRef.current === gameId) return;
+
+    const bet = Number(game?.bet || 0);
+    let payout = 0;
+    switch (game?.status) {
+      case 'PLAYER_BLACKJACK':
+        payout = bet * 2.5;
+        break;
+      case 'PLAYER_WIN':
+      case 'DEALER_BUST':
+        payout = bet * 2;
+        break;
+      case 'PUSH':
+        payout = bet;
+        break;
+      default:
+        payout = 0;
+    }
+
+    settledGameIdRef.current = gameId;
+    if (payout > 0) {
+      setBalance((b) => b + payout);
+    }
+  }, [finished, gameId, game?.bet, game?.status, setBalance]);
+
   async function deal() {
     setError('');
     setSubmitting(true);
     try {
+      if (balance < selectedChip) {
+        setError('Not enough chips for that bet');
+        return;
+      }
+
+      // Deduct bet immediately when the hand starts.
+      setBalance((b) => b - selectedChip);
+      settledGameIdRef.current = '';
       const next = await startBlackjack({ bet: selectedChip });
       setGame(next);
     } catch (err) {
@@ -191,7 +229,7 @@ export default function Blackjack() {
           <div className="flex items-center gap-2">
             <button
               onClick={gameId ? hit : deal}
-              disabled={submitting || (gameId && finished)}
+              disabled={submitting || (gameId && finished) || (!gameId && balance < selectedChip)}
               className="px-5 py-2 text-xs uppercase tracking-wider text-[#E8E0D0] rounded-[2px] hover:bg-[#A02020] disabled:opacity-40 disabled:cursor-not-allowed"
               style={{ background: '#8B1A1A' }}
             >

@@ -1,8 +1,10 @@
 import { Outlet, useLocation, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade } from 'lucide-react';
+
+const BALANCE_KEY = 'luckii_balance';
 
 const mobileNav = [
   { icon: LayoutDashboard, label: 'Lobby', path: '/app' },
@@ -13,9 +15,17 @@ const mobileNav = [
 ];
 
 export default function AppLayout() {
-  const [balance] = useState(25000);
+  const [balance, setBalance] = useState(() => {
+    const raw = localStorage.getItem(BALANCE_KEY);
+    const parsed = raw ? Number(raw) : NaN;
+    return Number.isFinite(parsed) ? parsed : 25000;
+  });
   const location = useLocation();
   const isGamePage = ['/app/blackjack', '/app/mines', '/app/poker'].includes(location.pathname);
+
+  useEffect(() => {
+    localStorage.setItem(BALANCE_KEY, String(balance));
+  }, [balance]);
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#0E1310' }}>
@@ -25,7 +35,7 @@ export default function AppLayout() {
       <div className="flex flex-col flex-1 min-w-0">
         <Navbar balance={balance} />
         <main className={`flex-1 overflow-auto ${isGamePage ? '' : 'p-4 lg:p-6'}`}>
-          <Outlet />
+          <Outlet context={{ balance, setBalance }} />
         </main>
       </div>
       <div className="lg:hidden fixed bottom-0 left-0 right-0 flex border-t border-[#2A3A28]" style={{ background: '#141C16' }}>
