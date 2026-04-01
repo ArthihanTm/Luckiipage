@@ -84,7 +84,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))  // Hash password - never store plain text!
-                .role(request.getRole())  // Assign role (ADMIN or USER)
+                // Self-registration always creates USER accounts.
+                .role(dev.zwazel.springintro.security.Role.USER)
                 .build();
         
         // Persist user to database

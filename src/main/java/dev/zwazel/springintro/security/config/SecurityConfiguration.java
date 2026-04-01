@@ -4,7 +4,6 @@ import dev.zwazel.springintro.security.auth.AuthenticationController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -62,7 +61,6 @@ public class SecurityConfiguration {
      * <p><b>Authorization Rules (evaluated top-to-bottom):</b></p>
      * <ul>
      *   <li>/error, /api/v1/auth/** - permitAll() (public endpoints)</li>
-     *   <li>POST /api/v1/resource - hasRole("ADMIN") (admin-only endpoint)</li>
      *   <li>All others - authenticated() (requires valid JWT token)</li>
      * </ul>
      *
@@ -90,9 +88,7 @@ public class SecurityConfiguration {
                         request
                                 // Rule 1: Public endpoints (no authentication required)
                                 .requestMatchers("/error", "/api/v1/auth/**", "/api/v1/blackjack/**").permitAll()
-                                // Rule 2: Admin-only resource creation
-                                .requestMatchers(HttpMethod.POST, "/api/v1/resource").hasRole("ADMIN")
-                                // Rule 3: Catch-all (all other endpoints require authentication)
+                                // Rule 2: Catch-all (all other endpoints require authentication)
                                 .anyRequest().authenticated())
                 // STEP 4: Use stateless session policy (no server-side sessions)
                 // Each request is independent; state is in JWT token only

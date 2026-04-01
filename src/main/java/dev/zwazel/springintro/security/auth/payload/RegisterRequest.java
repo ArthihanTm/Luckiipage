@@ -5,7 +5,6 @@ import dev.zwazel.springintro.security.auth.AuthenticationController;
 import dev.zwazel.springintro.validation.password.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,8 +36,7 @@ import lombok.NoArgsConstructor;
  *         <li>Contains at least one special character (!@#$%^&*)</li>
  *       </ul>
  *       Examples: "Str0ng!Pass123" ✓, "weak123" ✗ (no special char), "PASSWORD" ✗ (no lowercase)</li>
- *   <li><b>role</b>: Must be a valid {@link Role} enum value (ADMIN or USER).
- *       Cannot be null. Determines initial authorization level for the new account.</li>
+ *   <li><b>role</b>: Not accepted during self-registration. All new accounts are created as USER.</li>
  * </ul>
  *
  * <h2>Usage Example</h2>
@@ -48,8 +46,7 @@ import lombok.NoArgsConstructor;
  *
  * {
  *   "email": "john.doe@example.com",
- *   "password": "SecureP@ss123",
- *   "role": "USER"
+ *   "password": "SecureP@ss123"
  * }
  * </pre>
  *
@@ -62,7 +59,7 @@ import lombok.NoArgsConstructor;
  * {
  *   "id": "550e8400-e29b-41d4-a716-446655440000",
  *   "email": "john.doe@example.com",
- *   "roles": ["USER_READ", "USER_WRITE"],
+ *   "roles": ["READ_PRIVILEGE", "WRITE_PRIVILEGE", "ROLE_USER"],
  *   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
  *   "token_type": "Bearer"
  * }
@@ -122,21 +119,4 @@ public class RegisterRequest {
     @NotBlank(message = "password is required")
     @StrongPassword
     private String password;
-
-    /**
-     * Initial role for the new user account.
-     *
-     * <ul>
-     *   <li>Must not be null (required field)</li>
-     *   <li>Valid values: ADMIN, USER (see {@link Role} enum)</li>
-     *   <li>Determines initial permissions (authorities) for the new account</li>
-     *   <li>Role can be changed later via administrative endpoints (if implemented)</li>
-     *   <li>Users with ADMIN role can perform all operations (READ, WRITE, UPDATE, DELETE)</li>
-     *   <li>Users with USER role can only perform READ and WRITE operations</li>
-     * </ul>
-     *
-     * @see Role - User role enumeration (ADMIN, USER)
-     */
-    @NotNull
-    private Role role;
 }

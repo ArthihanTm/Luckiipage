@@ -7,7 +7,6 @@ import { register } from '../api/auth';
 
 export default function Register() {
   const [currency, setCurrency] = useState('coins');
-  const [role, setRole] = useState('USER');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -19,7 +18,7 @@ export default function Register() {
     setError('');
     setSubmitting(true);
     try {
-      await register({ email, password, role });
+      await register({ email, password });
       navigate('/app');
     } catch (err) {
       setError(err?.message || 'Registration failed');
@@ -129,25 +128,6 @@ export default function Register() {
                     style={{ background: currency === c ? '#8B1A1A' : '#141C16' }}
                   >
                     {c === 'coins' ? '◆ Chips' : '◇ Gems'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[#8A8A7A] text-xs mb-1.5">Account Role (backend requirement)</label>
-              <div className="flex border border-[#2A3A28] rounded-[2px] overflow-hidden">
-                {['USER', 'ADMIN'].map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRole(r)}
-                    className={`flex-1 py-2 text-xs uppercase tracking-wider transition-colors ${
-                      role === r ? 'text-[#E8E0D0]' : 'text-[#8A8A7A]'
-                    }`}
-                    style={{ background: role === r ? '#8B1A1A' : '#141C16' }}
-                  >
-                    {r}
                   </button>
                 ))}
               </div>

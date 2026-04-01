@@ -49,10 +49,10 @@ export async function login({ email, password }) {
   return data;
 }
 
-export async function register({ email, password, role = 'USER' }) {
+export async function register({ email, password }) {
   const data = await requestJson('/api/v1/auth/register', {
     method: 'POST',
-    body: { email, password, role },
+    body: { email, password },
   });
   setToken(data?.access_token);
   return data;
