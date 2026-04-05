@@ -176,7 +176,7 @@ public class AuthenticationController {
      * @see JwtService#generateJwtCookie(String) - Creates the secure cookie
      */
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         // STEP 1: Validate credentials against database user
         // AuthenticationService delegates to Spring's AuthenticationManager, which:
         // - Loads User from database

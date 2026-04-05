@@ -14,7 +14,7 @@ public class BlackjackService {
         String id = UUID.randomUUID().toString();
         BlackjackGame game = new BlackjackGame(id, request.getBet());
         games.put(id, game);
-        return game.toResponse(false);
+        return game.toResponse(game.isFinished());
     }
 
     public GameResponse hit(String gameId) {

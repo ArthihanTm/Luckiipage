@@ -76,7 +76,7 @@ export default function Login() {
 
           <form className="space-y-4" onSubmit={onSubmit}>
             <div>
-              <label className="block text-[#8A8A7A] text-xs mb-1.5">Email or Username</label>
+              <label className="block text-[#8A8A7A] text-xs mb-1.5">Email</label>
               <input
                 type="text"
                 className="w-full px-3 py-2 rounded-[2px] border border-[#2A3A28] text-[#E8E0D0] text-sm placeholder-[#555] focus:border-[#C8A84B] focus:ring-1 focus:ring-[#C8A84B] outline-none"

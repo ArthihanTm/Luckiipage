@@ -2,6 +2,7 @@ package dev.zwazel.springintro.security.auth.payload;
 
 import dev.zwazel.springintro.security.auth.AuthenticationController;
 import dev.zwazel.springintro.security.auth.AuthenticationService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -97,6 +98,7 @@ public class AuthenticationRequest {
      *       though many providers treat them case-insensitively)</li>
      * </ul>
      */
+    @NotBlank(message = "Email is required")
     private String email;
 
     /**
@@ -110,5 +112,6 @@ public class AuthenticationRequest {
      *       is correct or not, preventing timing-based attacks)</li>
      * </ul>
      */
+    @NotBlank(message = "Password is required")
     private String password;
 }

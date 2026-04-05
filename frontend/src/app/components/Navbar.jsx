@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Bell, Plus, Search } from 'lucide-react';
+import { formatChips } from '../utils/chips';
 
 export function Navbar({ balance }) {
   return (
@@ -35,7 +36,7 @@ export function Navbar({ balance }) {
         >
           <span className="text-[#C8A84B] text-xs">◆</span>
           <span className="text-[#E8E0D0] text-sm" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-            {balance.toLocaleString()}
+            {formatChips(balance ?? 0)}
           </span>
           <Link
             to="#"

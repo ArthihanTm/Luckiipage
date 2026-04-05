@@ -305,6 +305,102 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "mines",
+      "item": [
+        {
+          "name": "start game",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "if (json && json.gameId) {",
+                  "    pm.collectionVariables.set('minesGameId', json.gameId);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bet\": 10,\n  \"mineCount\": 3,\n  \"rows\": 5,\n  \"cols\": 5\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/mines/start",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "mines", "start"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reveal cell",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"row\": 0,\n  \"col\": 0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "localhost:8080/api/v1/mines/{{minesGameId}}/reveal",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "mines", "{{minesGameId}}", "reveal"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "cash out",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/mines/{{minesGameId}}/cash-out",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "mines", "{{minesGameId}}", "cash-out"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get state",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8080/api/v1/mines/{{minesGameId}}",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "mines", "{{minesGameId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }

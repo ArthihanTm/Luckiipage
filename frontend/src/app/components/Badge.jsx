@@ -2,7 +2,6 @@ const variants = {
   live: { bg: '#1A3A1A', text: '#4ADE80', dot: '#4ADE80' },
   hot: { bg: '#3A1A1A', text: '#F87171' },
   new: { bg: '#1A2A3A', text: '#60A5FA' },
-  vip: { bg: '#3A3020', text: '#C8A84B' },
 };
 
 export function Badge({ variant, children }) {

@@ -1,25 +1,36 @@
 import { Outlet, useLocation, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
-import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade, Gift } from 'lucide-react';
+import { getMe } from '../api/user';
+import { normalizeChips } from '../utils/chips';
 
 const BALANCE_KEY = 'luckii_balance';
 
 const mobileNav = [
   { icon: LayoutDashboard, label: 'Lobby', path: '/app' },
+  { icon: Gift, label: 'Spin', path: '/app/daily-spin' },
   { icon: Gamepad2, label: 'Games', path: '/app/games' },
-  { icon: Diamond, label: 'Blackjack', path: '/app/blackjack' },
+  { icon: Diamond, label: 'BJ', path: '/app/blackjack' },
   { icon: Bomb, label: 'Mines', path: '/app/mines' },
   { icon: Spade, label: 'Poker', path: '/app/poker' },
 ];
 
 export default function AppLayout() {
-  const [balance, setBalance] = useState(() => {
+  const [balance, setBalanceState] = useState(() => {
     const raw = localStorage.getItem(BALANCE_KEY);
     const parsed = raw ? Number(raw) : NaN;
-    return Number.isFinite(parsed) ? parsed : 25000;
+    return normalizeChips(Number.isFinite(parsed) ? parsed : 25000);
   });
+
+  const setBalance = useCallback((update) => {
+    setBalanceState((prev) => {
+      const prevN = normalizeChips(prev);
+      const next = typeof update === 'function' ? update(prevN) : update;
+      return normalizeChips(next);
+    });
+  }, []);
   const location = useLocation();
   const isGamePage = ['/app/blackjack', '/app/mines', '/app/poker'].includes(location.pathname);
 
@@ -27,10 +38,27 @@ export default function AppLayout() {
     localStorage.setItem(BALANCE_KEY, String(balance));
   }, [balance]);
 
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const me = await getMe();
+        if (!cancelled && typeof me?.chipBalance === 'number') {
+          setBalance(me.chipBalance);
+        }
+      } catch {
+        /* guest or expired session — keep local balance */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: '#0E1310' }}>
       <div className="hidden lg:block">
-        <Sidebar />
+        <Sidebar balance={balance} />
       </div>
       <div className="flex flex-col flex-1 min-w-0">
         <Navbar balance={balance} />

@@ -15,7 +15,7 @@ const liveFeed = [
   { player: 'AceHigh_22', action: 'won 8,200 chips at Blackjack', time: 'just now' },
   { player: 'DarkKnight', action: 'hit 12x multiplier in Mines', time: '30s ago' },
   { player: 'QueenBee', action: 'won tournament #341', time: '2m ago' },
-  { player: 'SharkFin', action: 'reached Platinum VIP', time: '5m ago' },
+  { player: 'SharkFin', action: 'won 2,500 chips on Daily Spin', time: '5m ago' },
   { player: 'LuckyDraw', action: 'cashed out 15,400 in Mines', time: '8m ago' },
 ];
 

@@ -1,8 +1,8 @@
 const suits = {
   hearts: { symbol: '♥', color: '#8B1A1A' },
   diamonds: { symbol: '♦', color: '#8B1A1A' },
-  clubs: { symbol: '♣', color: '#E8E0D0' },
-  spades: { symbol: '♠', color: '#E8E0D0' },
+  clubs: { symbol: '♣', color: '#1a1a1a' },
+  spades: { symbol: '♠', color: '#1a1a1a' },
 };
 
 const sizes = {
@@ -11,20 +11,28 @@ const sizes = {
   lg: { w: 80, h: 112, text: 'text-lg', suit: 'text-2xl' },
 };
 
-export function PlayingCard({ rank, suit, faceDown = false, size = 'md', className = '' }) {
+export function PlayingCard({
+  rank,
+  suit,
+  faceDown = false,
+  size = 'md',
+  className = '',
+  style: outerStyle,
+}) {
   const s = sizes[size];
   const suitInfo = suits[suit];
 
   if (faceDown) {
     return (
       <div
-        className={`rounded-[3px] flex items-center justify-center ${className}`}
+        className={`rounded-[3px] flex items-center justify-center shrink-0 ${className}`}
         style={{
           width: s.w,
           height: s.h,
           background: 'repeating-linear-gradient(45deg, #8B1A1A, #8B1A1A 2px, #6B1414 2px, #6B1414 4px)',
           border: '2px solid #C8A84B',
           boxShadow: '2px 4px 12px rgba(0,0,0,0.5)',
+          ...outerStyle,
         }}
       >
         <div className="w-3 h-3 rotate-45 border border-[#C8A84B]" />
@@ -34,13 +42,14 @@ export function PlayingCard({ rank, suit, faceDown = false, size = 'md', classNa
 
   return (
     <div
-      className={`rounded-[3px] relative ${className}`}
+      className={`rounded-[3px] relative shrink-0 ${className}`}
       style={{
         width: s.w,
         height: s.h,
         background: '#F5F0E8',
         border: '1px solid #D0C8B8',
         boxShadow: '2px 4px 12px rgba(0,0,0,0.5)',
+        ...outerStyle,
       }}
     >
       <div className="absolute top-1 left-1.5 flex flex-col items-center leading-none" style={{ color: suitInfo.color }}>

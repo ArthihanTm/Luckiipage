@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,6 +20,22 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class TokenControllerHandler {
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
+        String msg = ex.getMessage();
+        if (msg == null || msg.isBlank() || "Bad credentials".equals(msg)) {
+            msg = "Invalid email or password";
+        }
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(Instant.now())
+                .error("Unauthorized")
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message(msg)
+                .path(request.getDescription(false))
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(value = TokenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

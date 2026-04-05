@@ -16,6 +16,12 @@ export function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
 }
 
+/** Headers for authenticated API calls (Bearer + cookies). */
+export function authHeaders() {
+  const t = getToken();
+  return t ? { Authorization: `Bearer ${t}` } : {};
+}
+
 async function requestJson(path, { method = 'GET', body, headers } = {}) {
   const res = await fetch(path, {
     method,
@@ -29,9 +35,9 @@ async function requestJson(path, { method = 'GET', body, headers } = {}) {
 
   const data = await res.json().catch(() => null);
   if (!res.ok) {
-    // Backend sometimes returns {field: message} for validation; stringify nicely.
     const message =
       data?.message ||
+      (data?.error && data?.status ? `${data.error} (${data.status})` : null) ||
       (data && typeof data === 'object' ? Object.values(data).join('\n') : null) ||
       `HTTP ${res.status}`;
     throw new Error(message);
@@ -39,22 +45,26 @@ async function requestJson(path, { method = 'GET', body, headers } = {}) {
   return data;
 }
 
+function pickAccessToken(data) {
+  if (!data || typeof data !== 'object') return '';
+  return data.access_token || data.accessToken || '';
+}
+
 export async function login({ email, password }) {
   const data = await requestJson('/api/v1/auth/authenticate', {
     method: 'POST',
-    body: { email, password },
+    body: { email: String(email || '').trim(), password },
   });
-  // Store token for local dev (cookie is Secure=true in backend)
-  setToken(data?.access_token);
+  setToken(pickAccessToken(data));
   return data;
 }
 
 export async function register({ email, password }) {
   const data = await requestJson('/api/v1/auth/register', {
     method: 'POST',
-    body: { email, password },
+    body: { email: String(email || '').trim(), password },
   });
-  setToken(data?.access_token);
+  setToken(pickAccessToken(data));
   return data;
 }
 

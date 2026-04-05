@@ -10,6 +10,7 @@ import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -50,6 +51,13 @@ public class User implements UserDetails {
     /** User's role which determines their authorities/permissions */
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    /** Virtual chip balance (entertainment only). */
+    @Builder.Default
+    private long chipBalance = 25_000L;
+
+    /** When the user last claimed the daily spin reward (UTC). */
+    private Instant lastDailySpinAt;
 
     /**
      * Maps the user's role to a collection of granted authorities.

@@ -189,17 +189,11 @@ public class ApplicationSecurityConfig {
      * @see org.springframework.security.authentication.dao.DaoAuthenticationProvider
      */
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        // STEP 1: Create DaoAuthenticationProvider with our UserDetailsService
-        // This provider will use our userDetailsService to load users from database
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
-        
-        // STEP 2: Configure the provider to use our PasswordEncoder (bcrypt)
-        // Without this, provider wouldn't know how to compare passwords
-        authProvider.setPasswordEncoder(passwordEncoder());
-        
-        // STEP 3: Return configured provider
-        // Spring Security will use this for all authentication attempts
+    public AuthenticationProvider authenticationProvider(
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 

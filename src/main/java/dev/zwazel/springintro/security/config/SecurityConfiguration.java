@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -77,6 +78,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // STEP 1: Disable CSRF protection (not needed for stateless JWT-based REST APIs)
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 // STEP 2: Configure exception handlers for authentication/authorization failures
                 .exceptionHandling(exception -> exception
                         // Return HTTP 401 with custom JSON error when JWT invalid/expired
@@ -87,7 +89,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request ->
                         request
                                 // Rule 1: Public endpoints (no authentication required)
-                                .requestMatchers("/error", "/api/v1/auth/**", "/api/v1/blackjack/**").permitAll()
+                                .requestMatchers("/error", "/api/v1/auth/**", "/api/v1/blackjack/**", "/api/v1/mines/**").permitAll()
                                 // Rule 2: Catch-all (all other endpoints require authentication)
                                 .anyRequest().authenticated())
                 // STEP 4: Use stateless session policy (no server-side sessions)

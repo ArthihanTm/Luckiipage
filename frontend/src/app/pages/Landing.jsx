@@ -17,9 +17,8 @@ const games = [
 ];
 
 const promos = [
-  { title: 'Welcome Bonus', desc: 'Start with 25,000 free chips when you create an account', tag: 'NEW' },
-  { title: 'Daily Spin', desc: 'Spin the wheel every 24 hours for bonus chips', tag: 'DAILY' },
-  { title: 'VIP Rewards', desc: 'Climb tiers for exclusive tables and multipliers', tag: 'VIP' },
+  { title: 'Welcome Bonus', desc: 'Start with 25,000 free chips when you create an account', tag: 'NEW', to: '/register' },
+  { title: 'Daily Spin', desc: 'Spin the wheel every 24 hours for bonus chips', tag: 'DAILY', to: '/app/daily-spin' },
 ];
 
 export default function Landing() {
@@ -135,9 +134,14 @@ export default function Landing() {
         <h2 className="text-[#E8E0D0] text-xl mb-6" style={{ fontFamily: "'Spectral', serif" }}>
           Promotions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-3xl">
           {promos.map((p) => (
-            <div key={p.title} className="border border-[#2A3A28] rounded-[4px] p-4" style={{ background: '#1A2119' }}>
+            <Link
+              key={p.title}
+              to={p.to}
+              className="block border border-[#2A3A28] rounded-[4px] p-4 hover:border-[#C8A84B]/30 transition-colors"
+              style={{ background: '#1A2119' }}
+            >
               <span className="inline-block px-2 py-0.5 text-[10px] tracking-wider uppercase rounded-[2px] mb-3" style={{ background: '#3A3020', color: '#C8A84B' }}>
                 {p.tag}
               </span>
@@ -145,7 +149,7 @@ export default function Landing() {
                 {p.title}
               </div>
               <div className="text-[#8A8A7A] text-xs">{p.desc}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

@@ -1,17 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade, Trophy, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade, Gift, Settings, LogOut } from 'lucide-react';
+import { formatChips } from '../utils/chips';
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/app' },
+  { icon: Gift, label: 'Daily Spin', path: '/app/daily-spin' },
   { icon: Gamepad2, label: 'All Games', path: '/app/games' },
   { icon: Diamond, label: 'Blackjack', path: '/app/blackjack' },
   { icon: Bomb, label: 'Mines', path: '/app/mines' },
   { icon: Spade, label: 'Poker', path: '/app/poker' },
 ];
 
-export function Sidebar() {
+export function Sidebar({ balance }) {
   const location = useLocation();
-  const vipProgress = 65;
 
   return (
     <div className="w-56 h-screen flex flex-col border-r border-[#2A3A28]" style={{ background: '#141C16' }}>
@@ -35,22 +36,10 @@ export function Sidebar() {
             LP
           </div>
           <div>
-            <div className="text-[#E8E0D0] text-sm">Player_7291</div>
-            <div className="text-[10px] text-[#C8A84B] flex items-center gap-1">
-              <Trophy size={10} /> Gold VIP
+            <div className="text-[#E8E0D0] text-sm">Player</div>
+            <div className="text-[10px] text-[#C8A84B] flex items-center gap-1" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+              <Gift size={10} /> {formatChips(balance ?? 0)} chips
             </div>
-          </div>
-        </div>
-        <div className="mt-2">
-          <div className="flex justify-between text-[10px] text-[#8A8A7A] mb-1">
-            <span>VIP Progress</span>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{vipProgress}%</span>
-          </div>
-          <div className="h-1.5 rounded-[2px] overflow-hidden" style={{ background: '#0E1310' }}>
-            <div
-              className="h-full rounded-[2px]"
-              style={{ width: `${vipProgress}%`, background: 'linear-gradient(90deg, #C8A84B, #9A7A2A)' }}
-            />
           </div>
         </div>
       </div>
