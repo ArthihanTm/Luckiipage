@@ -4,21 +4,12 @@ import { Badge } from '../components/Badge';
 import { Disclaimer } from '../components/Disclaimer';
 import { Users } from 'lucide-react';
 
-const filters = ['All', 'Card Games', 'Table Games', 'Instant Win', 'Tournaments'];
+const filters = ['All', 'Card Games', 'Instant Win'];
 
 const games = [
-  { name: 'Blackjack Classic', cat: 'Card Games', players: 2341, badge: 'hot', path: '/app/blackjack', desc: 'Classic 6-deck, 3:2 payout' },
-  { name: "Texas Hold'em", cat: 'Card Games', players: 1892, badge: 'live', path: '/app/poker', desc: '6 player tables, no limit' },
+  { name: 'Blackjack', cat: 'Card Games', players: 2341, badge: 'hot', path: '/app/blackjack', desc: 'Classic 6-deck, 3:2 payout' },
   { name: 'Mines', cat: 'Instant Win', players: 987, badge: 'hot', path: '/app/mines', desc: '5x5 grid, choose your risk' },
-  { name: 'European Roulette', cat: 'Table Games', players: 1456, badge: 'live', path: '/app/games', desc: 'Single zero, French rules' },
-  { name: 'Baccarat', cat: 'Card Games', players: 678, badge: null, path: '/app/games', desc: 'Punto banco variant' },
-  { name: 'Craps', cat: 'Table Games', players: 432, badge: 'new', path: '/app/games', desc: 'Full odds, all bet types' },
-  { name: 'Video Poker', cat: 'Card Games', players: 521, badge: null, path: '/app/games', desc: 'Jacks or Better, 9/6' },
-  { name: 'Hi-Lo', cat: 'Instant Win', players: 789, badge: 'new', path: '/app/games', desc: 'Predict higher or lower' },
-  { name: 'Speed Blackjack', cat: 'Card Games', players: 1123, badge: 'live', path: '/app/blackjack', desc: 'Fastest hand wins first' },
-  { name: 'Pai Gow Poker', cat: 'Card Games', players: 234, badge: null, path: '/app/games', desc: 'Set two hands, beat dealer' },
-  { name: 'Casino War', cat: 'Table Games', players: 345, badge: null, path: '/app/games', desc: 'Simple high card wins' },
-  { name: 'Keno', cat: 'Instant Win', players: 567, badge: null, path: '/app/games', desc: 'Pick numbers, win big' },
+  { name: 'Daily Spin', cat: 'Instant Win', players: 1124, badge: 'new', path: '/app/daily-spin', desc: 'Free wheel every 24 hours' },
 ];
 
 export default function GameSelection() {

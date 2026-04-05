@@ -2,9 +2,11 @@ import { Outlet, useLocation, Link } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
-import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade, Gift } from 'lucide-react';
+import { PlaytimeRewardsModal } from './PlaytimeRewardsModal';
+import { LayoutDashboard, Gamepad2, Diamond, Bomb, Gift } from 'lucide-react';
 import { getMe } from '../api/user';
 import { normalizeChips } from '../utils/chips';
+import { useDailyPlaytimeRewards } from '../hooks/useDailyPlaytimeRewards';
 
 const BALANCE_KEY = 'luckii_balance';
 
@@ -14,7 +16,6 @@ const mobileNav = [
   { icon: Gamepad2, label: 'Games', path: '/app/games' },
   { icon: Diamond, label: 'BJ', path: '/app/blackjack' },
   { icon: Bomb, label: 'Mines', path: '/app/mines' },
-  { icon: Spade, label: 'Poker', path: '/app/poker' },
 ];
 
 export default function AppLayout() {
@@ -32,7 +33,19 @@ export default function AppLayout() {
     });
   }, []);
   const location = useLocation();
-  const isGamePage = ['/app/blackjack', '/app/mines', '/app/poker'].includes(location.pathname);
+  const isGamePage = ['/app/blackjack', '/app/mines'].includes(location.pathname);
+
+  const { todaySeconds, claimedTierIds, tryClaim } = useDailyPlaytimeRewards();
+  const [playtimeModalOpen, setPlaytimeModalOpen] = useState(false);
+
+  const handleClaimPlaytimeTier = useCallback(
+    (tier) => {
+      if (tryClaim(tier)) {
+        setBalance((b) => b + tier.chips);
+      }
+    },
+    [tryClaim, setBalance],
+  );
 
   useEffect(() => {
     localStorage.setItem(BALANCE_KEY, String(balance));
@@ -61,11 +74,18 @@ export default function AppLayout() {
         <Sidebar balance={balance} />
       </div>
       <div className="flex flex-col flex-1 min-w-0">
-        <Navbar balance={balance} />
+        <Navbar balance={balance} onPlaytimeRewardsClick={() => setPlaytimeModalOpen(true)} />
         <main className={`flex-1 overflow-auto ${isGamePage ? '' : 'p-4 lg:p-6'}`}>
           <Outlet context={{ balance, setBalance }} />
         </main>
       </div>
+      <PlaytimeRewardsModal
+        open={playtimeModalOpen}
+        onClose={() => setPlaytimeModalOpen(false)}
+        todaySeconds={todaySeconds}
+        claimedTierIds={claimedTierIds}
+        onClaimTier={handleClaimPlaytimeTier}
+      />
       <div className="lg:hidden fixed bottom-0 left-0 right-0 flex border-t border-[#2A3A28]" style={{ background: '#141C16' }}>
         {mobileNav.map((item) => {
           const active = location.pathname === item.path;

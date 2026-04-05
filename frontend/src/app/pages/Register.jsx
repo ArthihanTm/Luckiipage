@@ -5,6 +5,9 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../api/auth';
 
+/** Matches backend StrongPasswordValidator (see RegisterRequest / StrongPasswordValidator.java). */
+const STRONG_PASSWORD = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*()]).{8,}$/;
+
 export default function Register() {
   const [currency, setCurrency] = useState('coins');
   const [email, setEmail] = useState('');
@@ -16,9 +19,20 @@ export default function Register() {
   async function onSubmit(e) {
     e.preventDefault();
     setError('');
+    const trimmedEmail = String(email || '').trim();
+    if (!trimmedEmail) {
+      setError('Email is required.');
+      return;
+    }
+    if (!STRONG_PASSWORD.test(password || '')) {
+      setError(
+        'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character from: @ # $ % ^ & + = ! * ( )',
+      );
+      return;
+    }
     setSubmitting(true);
     try {
-      await register({ email, password });
+      await register({ email: trimmedEmail, password });
       navigate('/app');
     } catch (err) {
       setError(err?.message || 'Registration failed');
@@ -95,6 +109,8 @@ export default function Register() {
               <label className="block text-[#8A8A7A] text-xs mb-1.5">Email</label>
               <input
                 type="email"
+                required
+                autoComplete="email"
                 className="w-full px-3 py-2 rounded-[2px] border border-[#2A3A28] text-[#E8E0D0] text-sm placeholder-[#555] focus:border-[#C8A84B] focus:ring-1 focus:ring-[#C8A84B] outline-none"
                 style={{ background: '#141C16' }}
                 placeholder="player@example.com"
@@ -106,12 +122,22 @@ export default function Register() {
               <label className="block text-[#8A8A7A] text-xs mb-1.5">Password</label>
               <input
                 type="password"
+                required
+                minLength={8}
+                autoComplete="new-password"
                 className="w-full px-3 py-2 rounded-[2px] border border-[#2A3A28] text-[#E8E0D0] text-sm placeholder-[#555] focus:border-[#C8A84B] focus:ring-1 focus:ring-[#C8A84B] outline-none"
                 style={{ background: '#141C16' }}
-                placeholder="••••••••"
+                placeholder="e.g. LuckiiP@ss1"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <p className="mt-1.5 text-[10px] text-[#8A8A7A] leading-relaxed">
+                At least 8 characters, with uppercase, lowercase, a number, and one special character from{' '}
+                <span className="text-[#6A6A5A]" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+                  {'@ # $ % ^ & + = ! * ( )'}
+                </span>
+                .
+              </p>
             </div>
 
             <div>

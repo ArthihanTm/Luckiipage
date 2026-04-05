@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
 import { Bell, Plus, Search } from 'lucide-react';
 import { formatChips } from '../utils/chips';
 
-export function Navbar({ balance }) {
+export function Navbar({ balance, onPlaytimeRewardsClick }) {
   return (
     <div
       className="h-12 flex items-center justify-between px-4 border-b border-[#2A3A28] shrink-0"
@@ -38,13 +37,16 @@ export function Navbar({ balance }) {
           <span className="text-[#E8E0D0] text-sm" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
             {formatChips(balance ?? 0)}
           </span>
-          <Link
-            to="#"
-            className="ml-1 flex items-center justify-center w-5 h-5 rounded-[2px]"
+          <button
+            type="button"
+            onClick={onPlaytimeRewardsClick}
+            className="ml-1 flex items-center justify-center w-5 h-5 rounded-[2px] hover:opacity-90"
             style={{ background: '#8B1A1A' }}
+            title="Earn chips from online time"
+            aria-label="Open playtime rewards"
           >
             <Plus size={12} className="text-[#E8E0D0]" />
-          </Link>
+          </button>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { TrendingUp, TrendingDown, Clock, Flame, ChevronRight } from 'lucide-rea
 const recentSessions = [
   { game: 'Blackjack', result: '+2,400', win: true, time: '12 min ago', hands: 18 },
   { game: 'Mines', result: '-800', win: false, time: '1 hr ago', hands: 5 },
-  { game: 'Poker', result: '+5,200', win: true, time: '3 hr ago', hands: 42 },
+  { game: 'Daily Spin', result: '+5,000', win: true, time: '3 hr ago', hands: 1 },
   { game: 'Blackjack', result: '-1,100', win: false, time: '5 hr ago', hands: 24 },
   { game: 'Mines', result: '+3,800', win: true, time: '8 hr ago', hands: 12 },
 ];

@@ -80,6 +80,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+        if (userRepository.findUserByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("An account with this email already exists.");
+        }
+
         // Create new user with hashed password
         var user = User.builder()
                 .email(request.getEmail())

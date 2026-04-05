@@ -11,7 +11,7 @@ const stats = [
 
 const games = [
   { name: 'Blackjack', desc: 'Classic 21 - beat the dealer', players: '2,341 playing', path: '/app/blackjack' },
-  { name: 'Poker', desc: "Texas Hold'em - 6 player tables", players: '1,892 playing', path: '/app/poker' },
+  { name: 'Daily Spin', desc: 'Free wheel every 24 hours', players: '1,124 playing', path: '/app/daily-spin' },
   { name: 'Mines', desc: 'Reveal gems, avoid mines', players: '987 playing', path: '/app/mines' },
   { name: 'Roulette', desc: 'European single-zero wheel', players: '1,456 playing', path: '/app/games' },
 ];
@@ -65,7 +65,7 @@ export default function Landing() {
             <span className="text-[#C8A84B]">Without the Risk</span>
           </h1>
           <p className="text-[#8A8A7A] text-base lg:text-lg mb-8 max-w-lg" style={{ fontFamily: "'Barlow', sans-serif" }}>
-            Premium casino simulator with Blackjack, Poker, Mines and more. Play with virtual chips. Sharpen your
+            Premium casino simulator with Blackjack, Mines, Daily Spin and more. Play with virtual chips. Sharpen your
             strategy. Entertainment only.
           </p>
           <div className="flex items-center gap-3">
@@ -174,7 +174,7 @@ export default function Landing() {
             <div className="space-y-1.5">
               <div className="text-[#E8E0D0] text-[10px] uppercase tracking-wider mb-2">Games</div>
               <div>Blackjack</div>
-              <div>Poker</div>
+              <div>Daily Spin</div>
               <div>Mines</div>
             </div>
             <div className="space-y-1.5">

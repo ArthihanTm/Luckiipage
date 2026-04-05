@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Gamepad2, Diamond, Bomb, Spade, Gift, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, Diamond, Bomb, Gift, Settings, LogOut } from 'lucide-react';
 import { formatChips } from '../utils/chips';
 
 const navItems = [
@@ -8,7 +8,6 @@ const navItems = [
   { icon: Gamepad2, label: 'All Games', path: '/app/games' },
   { icon: Diamond, label: 'Blackjack', path: '/app/blackjack' },
   { icon: Bomb, label: 'Mines', path: '/app/mines' },
-  { icon: Spade, label: 'Poker', path: '/app/poker' },
 ];
 
 export function Sidebar({ balance }) {

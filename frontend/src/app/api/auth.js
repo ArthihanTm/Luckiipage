@@ -1,5 +1,22 @@
 const TOKEN_KEY = 'luckii_access_token';
 
+/** Backend validation errors are often a flat { fieldName: message } map (no `message` key). */
+function formatApiError(data, status) {
+  if (data == null || typeof data !== 'object') return `HTTP ${status}`;
+  if (typeof data.message === 'string' && data.message.trim()) return data.message.trim();
+  if (typeof data.error === 'string' && data.status != null) {
+    return `${data.error} (${data.status})`;
+  }
+  const skip = new Set(['timestamp', 'status', 'error', 'path']);
+  const fieldErrors = Object.entries(data).filter(
+    ([k, v]) => !skip.has(k) && typeof v === 'string' && v.trim(),
+  );
+  if (fieldErrors.length > 0) {
+    return fieldErrors.map(([k, v]) => `${k}: ${v}`).join('\n');
+  }
+  return `HTTP ${status}`;
+}
+
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY) || '';
 }
@@ -33,16 +50,37 @@ async function requestJson(path, { method = 'GET', body, headers } = {}) {
     credentials: 'include',
   });
 
-  const data = await res.json().catch(() => null);
+  const text = await res.text();
+  let data = null;
+  if (text) {
+    try {
+      data = JSON.parse(text);
+    } catch {
+      /* non-JSON body (e.g. text/plain error from Spring) */
+    }
+  }
+
   if (!res.ok) {
-    const message =
-      data?.message ||
-      (data?.error && data?.status ? `${data.error} (${data.status})` : null) ||
-      (data && typeof data === 'object' ? Object.values(data).join('\n') : null) ||
-      `HTTP ${res.status}`;
+    let message = `HTTP ${res.status}`;
+    if (data && typeof data === 'object') {
+      message = formatApiError(data, res.status);
+    } else if (text.trim()) {
+      message = stripPlainErrorPrefix(text.trim());
+    }
     throw new Error(message);
   }
+
+  if (!text.trim()) return null;
+  if (data == null || typeof data !== 'object') {
+    throw new Error('Invalid JSON response');
+  }
   return data;
+}
+
+/** Backend sometimes returns text/plain (e.g. HttpMessageNotReadableException handler). */
+function stripPlainErrorPrefix(text) {
+  const prefix = 'Cannot parse JSON :: ';
+  return text.startsWith(prefix) ? text.slice(prefix.length) : text;
 }
 
 function pickAccessToken(data) {
